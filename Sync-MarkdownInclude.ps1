@@ -55,7 +55,7 @@ function Invoke-RenderString ([IncludeOptions]$options) {
             $content = [string]::Join([System.Environment]::NewLine, $lines[$from..$to])
         }
     }
-    $includeBlocks = [regex]::Matches($content, "(?s)(?<head>\<!--+ {0,}#md_include +`"(?<path>.+?)`"(?: +from +(?<from>\d+)(?: +to +(?<to>\d+))?)?(?: +as +(?<as>\w+))?(?: +lang +(?<lang>\w+))? {0,}-+\>).+?(?<foot><!--+ {0,}#md_include end +-+-\>)")
+    $includeBlocks = [regex]::Matches($content, "(?is)(?<head>\<!--+ {0,}#md_include +`"(?<path>.+?)`"(?: +from +(?<from>\d+)(?: +to +(?<to>\d+))?)?(?: +as +(?<as>\w+))?(?: +lang +(?<lang>\w+))? {0,}-+\>).+?(?<foot><!--+ {0,}#md_include end +-+-\>)")
     foreach ($includeBlock in $includeBlocks) {
         [IncludeOptions]$nextOptions = @{
             head           = $includeBlock.Groups["head"].Value
@@ -95,7 +95,7 @@ function Invoke-RenderString ([IncludeOptions]$options) {
 $files = Get-ChildItem -Recurse *.md
 foreach ($file in $files) {
     $content = Get-Content $file.FullName -Raw
-    $includeBlocks = [regex]::Matches($content, "(?s)(?<head>\<!--+ {0,}#md_include +`"(?<path>.+?)`"(?: +from +(?<from>\d+)(?: +to +(?<to>\d+)))?(?: +as +(?<as>\w+))?(?: +lang +(?<lang>\w+))? {0,}-+\>).+?(?<foot><!--+ {0,}#md_include end +-+-\>)")
+    $includeBlocks = [regex]::Matches($content, "(?is)(?<head>\<!--+ {0,}#md_include +`"(?<path>.+?)`"(?: +from +(?<from>\d+)(?: +to +(?<to>\d+)))?(?: +as +(?<as>\w+))?(?: +lang +(?<lang>\w+))? {0,}-+\>).+?(?<foot><!--+ {0,}#md_include end +-+-\>)")
     foreach ($includeBlock in $includeBlocks) {
         [IncludeOptions]$options = @{
             head           = $includeBlock.Groups["head"].Value
